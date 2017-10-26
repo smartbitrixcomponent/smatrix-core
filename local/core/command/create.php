@@ -13,8 +13,12 @@ if(!$siteTemplate){
 if(!$componentName){
 	exit('usage: create.php namespace:component [template=.default]'/*.' [siteTemplate]'*/) ;
 }
-
+/**
+ * @todo: на автолоад
+ */
 require_once __DIR__."/../class/Core.php";
+require_once __DIR__."/../ComponentMaker.php";
+
 $APPLICATION = Core::getInstance();
 $APPLICATION->setSiteTemplate($siteTemplate);
 
