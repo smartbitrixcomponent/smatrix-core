@@ -17,7 +17,7 @@ if(!$componentName){
  * @todo: на автолоад
  */
 require_once __DIR__."/../class/Core.php";
-require_once __DIR__."/../ComponentMaker.php";
+require_once __DIR__."/../class/ComponentMaker.php";
 
 $APPLICATION = Core::getInstance();
 $APPLICATION->setSiteTemplate($siteTemplate);

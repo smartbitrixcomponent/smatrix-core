@@ -1,8 +1,10 @@
 <?php
+
+require_once __DIR__."/ComponentMaker.php";
 class ComponentMaker {
 
 	function __construct($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array()) {
-        $this->component = new Component($componentName, $componentTemplate);
+        $this->component = new ComponentAdapter($componentName, $componentTemplate);
         // считаем, что она есть. Создалась при установке пакета
         $this->protoDirPath = realpath(__DIR__.'/../prototype/');
         $this->protoComponentsDirPath = $this->protoDirPath;
