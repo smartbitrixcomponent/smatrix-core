@@ -1,0 +1,2 @@
+<?php
+$APPLICATION->includeFooter();

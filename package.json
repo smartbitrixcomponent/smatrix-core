@@ -6,7 +6,8 @@
   "dependencies": {
     "browser-sync": "^2.18.13",
     "gulp": "^3.9.1",
-    "gulp-connect-php": "^1.0.1"
+    "gulp-connect-php": "^1.0.1",
+    "jshint": "^2.9.5"
   },
   "devDependencies": {},
   "scripts": {

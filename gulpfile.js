@@ -11,10 +11,16 @@ gulp.task('default', function() {
         });
     });
 
-    gulp.watch('./**/**/**/*.php').on('change', function () {
+    gulp.watch([
+        './**/*.php',
+        './**/**/*.php',
+        './local/templates/**/**/**/**/**/**/*.php',
+        './local/templates/**/**/**/**/**/**/*.css',
+        './local/templates/**/**/**/**/**/**/*.js',
+    ]).on('change', function () {
         browserSync.reload();
     });
-    gulp.watch(['./**/*.css', './**/*.js']).on('change', function () {
-        browserSync.reload();
-    });
+    // gulp.watch([]).on('change', function () {
+    //     browserSync.reload();
+    // });
 });
