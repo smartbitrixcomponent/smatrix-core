@@ -128,9 +128,4 @@ class ComponentAdapter {
         return array();
     }
 
-    public function checkComponentExists(){
-        var_dump($this);
-    } 
-
-
 }
