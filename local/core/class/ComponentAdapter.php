@@ -1,5 +1,5 @@
 <?php
-class Component {
+class ComponentAdapter {
     function __construct($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array(), $template = 'site') {
         $this->basePath = __DIR__.'/../../components/';
         $this->baseHTMLPath = '/local/templates/';

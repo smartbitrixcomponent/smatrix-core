@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/CoreComponent.php";
+require_once __DIR__."/ComponentAdapter.php";
 class Core {
     const CSS_TEMPLATE = "<css />";
     function __construct($template) {
@@ -12,7 +12,7 @@ class Core {
     }
     public function IncludeComponent($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array())
     {
-        $component = new Component($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams, $this->template);
+        $component = new ComponentAdapter($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams, $this->template);
         $component->getComponent();
         array_push($this->CSS, $component->ComponentPathCSS);
         array_push($this->JS, $component->ComponentPathJS);
