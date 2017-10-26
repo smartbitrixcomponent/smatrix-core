@@ -1,3 +1,6 @@
+<?
+    global $APPLICATION;
+?>
 <ul>
 <?php foreach($arResult['ITEMS'] as $item):?>
     <li>
@@ -6,3 +9,5 @@
     </li>
 <?php endforeach;?>
 </ul>
+<?$APPLICATION->IncludeComponent("bitrix:button", "default", array("CONTENT" => "im button"));?>
+<hr>
