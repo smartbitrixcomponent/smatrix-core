@@ -16,14 +16,14 @@ class Component {
         $this->folderName = $explodeName[1];
         $this->ComponentPath = $this->MakeComponentPath($componentName);
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
-        $this->ComponentPathCSS = $this->MakeCSSPath();
-        $this->ComponentPathJS = $this->MakeJSPath();
-
+        $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
+        $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
     }
 
 
     public function getComponent() {
         if (file_exists($this->ComponentPath)) {
+            $arResult = $this->getMockData();
             require $this->ComponentPath;
             $this->combineCSS();
             $this->combineJS();
@@ -72,12 +72,28 @@ class Component {
     private function MakeJSPath() {
         return $this->baseHTMLPath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/script.js';
     }
+    private function MakeJSONPath() {
+        return $this->templatePath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/arResult.json';
+    }
+    private function getComponentAsset($path) {
+        if(file_exists(__DIR__."/../../..".$path)) {
+            return $path;
+        } else {
+            return;
+        }
+    }
+
     /**
      * TODO
      * Добавить заглушку для получения данных из json
      */
     private function getMockData() {
-        return '';
+        $jsonPath = $this->MakeJSONPath();
+        if(file_exists($jsonPath)) {
+            $json = file_get_contents($jsonPath);
+            return json_decode($json, true);
+        }
+        return array();
     }
 
 

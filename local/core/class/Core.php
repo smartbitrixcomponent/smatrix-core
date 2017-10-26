@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__."/CoreComponent.php";
 class Core {
+    const CSS_TEMPLATE = "<css />";
     function __construct($template) {
         $this->template = $template;
         $this->basePath = __DIR__."/../../templates/".$this->template."/";
@@ -21,5 +22,25 @@ class Core {
     }
     public function includeFooter() {
         require $this->basePath.$this->footerFile;
+    }
+    public function ShowCSS() {
+        echo self::CSS_TEMPLATE;
+    }
+    public function combineHTML($html) {
+        $cssHtml = $this->CSSInHtml();
+        $html = $this->replaceCSS($html, $cssHtml);
+        return $html;
+    }
+    public function CSSInHtml() {
+        $html = '';
+        foreach($this->CSS as $css) {
+            if($css) {
+                $html .= '<link rel="stylesheet" href="'.$css.'">';
+            }
+        }
+        return $html;
+    }
+    public function replaceCSS($html, $css) {
+        return str_replace(self::CSS_TEMPLATE, $css, $html);
     }
 }
