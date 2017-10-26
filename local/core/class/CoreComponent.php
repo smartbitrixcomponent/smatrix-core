@@ -1,27 +1,43 @@
 <?php
 class Component {
-    function __construct($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array(), $template = 'site') {
+    function __construct($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array()) {
+        $APPLICATION = Core::getInstance();
         $this->basePath = __DIR__.'/../../components/';
-        $this->baseHTMLPath = '/local/templates/';
         $this->templatePath = __DIR__.'/../../templates/';
+        $this->baseHTMLPath = '/local/templates/';
         $this->baseName = 'component.php';
         $this->templateBaseName = 'template.php';
-        $this->componentTemplateSubfilder = $componentTemplate;
+        /**
+        * todo: поддержка .default шаблона 
+        */
+        $this->componentTemplateSubfolder = $componentTemplate;
         $this->templateMockBaseName = 'arResult.json';
-        $this->templateFilderName = $template.'/components/';
+        /**
+        * todo: поддержка .default шаблона сайта 
+        */
+        $this->templateFolderName = $APPLICATION->getSiteTemplate().'/components/';
         $this->nameSpace = '';
         $this->folderName = '';
         $explodeName = explode(":", $componentName);
         $this->nameSpace = $explodeName[0];
         $this->folderName = $explodeName[1];
         $this->ComponentPath = $this->MakeComponentPath($componentName);
+        $this->ComponentDirPath = $this->MakeComponentDirPath($componentName);
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
         $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
+        /**
+        * todo: объект $this->__template, в который занести все, что глубже папки компонента
+        */
     }
 
 
     public function getComponent() {
+        /**
+        * TODO: компонент должен быть объектом класса, и потенциально может не иметь файла component.php
+        * тогда он наследуется от базового, и при инклуде выполняется метод Execute родителя
+        * но то в битриксе, мы себе упрощаем пока что жизнь, и кладем component.php в каждую директорию компонента 
+        */
         if (file_exists($this->ComponentPath)) {
             $arResult = $this->getMockData();
             require $this->ComponentPath;
@@ -58,22 +74,36 @@ class Component {
         }
         return;
     }
-
-
-    private function MakeComponentPath($componentName) {
-        return $this->basePath.$this->nameSpace."/".$this->folderName."/".$this->baseName;
+    /**
+    * @todo: разгрести этот хаос почти одинаковых названий, одни из которых относительно корня сайта, другие абсолютные, а третьи отностиельно core
+    * привести все к путям относительно одной точки, а абсолютными адреса делать толкьо при работу с ФС
+    */
+    public function MakeComponentPath($componentName) {
+        return $this->MakeComponentDirPath().$this->baseName;
     }
-    private function MakeTemplatePath() {
-        return $this->templatePath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/'.$this->templateBaseName;
+    public function MakeComponentDirPath() {
+        return $this->MakeComponentNamespaceDirPath().$this->folderName."/";
+    }
+    public function MakeComponentNamespaceDirPath() {
+        return $this->basePath.$this->nameSpace."/";
+    }
+    public function MakeTemplateDirPath() {
+        return $this->templatePath.$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
+    }
+    public function MakeTemplatePath() {
+        return $this->MakeTemplateDirPath().$this->templateBaseName;
+    }
+    public function MakeTemplateHTMLDirPath() {
+        return $this->baseHTMLPath.$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
     }
     private function MakeCSSPath() {
-        return $this->baseHTMLPath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/style.css';
+        return $this->MakeTemplateHTMLDirPath().'style.css';
     }
     private function MakeJSPath() {
-        return $this->baseHTMLPath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/script.js';
+        return $this->MakeTemplateHTMLDirPath().'script.js';
     }
     private function MakeJSONPath() {
-        return $this->templatePath.$this->templateFilderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfilder.'/arResult.json';
+        return $this->MakeTemplateDirPath().'arResult.json';
     }
     private function getComponentAsset($path) {
         if(file_exists(__DIR__."/../../..".$path)) {
@@ -95,6 +125,10 @@ class Component {
         }
         return array();
     }
+
+    public function checkComponentExists(){
+        var_dump($this);
+    } 
 
 
 }
