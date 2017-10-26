@@ -1,4 +1,6 @@
-# SMATRIX #
+# SMART BITRIX COMPONENTS #
+
+## SMATRIX ##
 
 Get started:
 
