@@ -15,6 +15,7 @@ class ComponentAdapter {
         $this->nameSpace = $explodeName[0];
         $this->folderName = $explodeName[1];
         $this->ComponentPath = $this->MakeComponentPath($componentName);
+        $this->MockComponentPath = __DIR__."/../mock/component.php";
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
         $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
@@ -22,13 +23,13 @@ class ComponentAdapter {
 
 
     public function getComponent() {
+        $arResult = $this->getMockData();
+        $this->combineCSS();
+        $this->combineJS();
         if (file_exists($this->ComponentPath)) {
-            $arResult = $this->getMockData();
             require $this->ComponentPath;
-            $this->combineCSS();
-            $this->combineJS();
         } else {
-            echo "not found";
+            require $this->MockComponentPath;
         }
     }
     /**

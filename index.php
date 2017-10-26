@@ -11,6 +11,7 @@
         false
     );
 ?>
+<?$APPLICATION->IncludeComponent("bitrix:button", "default", array("CONTENT" => "im button"));?>
 <?php
     require __DIR__."/local/core/bootstrap/footer.php"
 ?>
