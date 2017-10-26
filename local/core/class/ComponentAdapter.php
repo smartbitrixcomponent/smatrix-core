@@ -23,6 +23,7 @@ class ComponentAdapter {
         $this->folderName = $explodeName[1];
         $this->ComponentPath = $this->MakeComponentPath($componentName);
         $this->ComponentDirPath = $this->MakeComponentDirPath($componentName);
+        $this->MockComponentPath = __DIR__."/../mock/component.php";
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
         $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
@@ -37,14 +38,15 @@ class ComponentAdapter {
         * TODO: компонент должен быть объектом класса, и потенциально может не иметь файла component.php
         * тогда он наследуется от базового, и при инклуде выполняется метод Execute родителя
         * но то в битриксе, мы себе упрощаем пока что жизнь, и кладем component.php в каждую директорию компонента 
+        * UPD: MockComponentPath - это шаг в сторону описанного
         */
+        $arResult = $this->getMockData();
+        $this->combineCSS();
+        $this->combineJS();
         if (file_exists($this->ComponentPath)) {
-            $arResult = $this->getMockData();
             require $this->ComponentPath;
-            $this->combineCSS();
-            $this->combineJS();
         } else {
-            echo "not found";
+            require $this->MockComponentPath;
         }
     }
     /**

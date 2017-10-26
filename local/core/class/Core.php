@@ -29,8 +29,12 @@ class Core {
     {
         $component = new ComponentAdapter($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams);
         $component->getComponent();
-        array_push($this->CSS, $component->ComponentPathCSS);
-        array_push($this->JS, $component->ComponentPathJS);
+        if(!in_array($component->ComponentPathCSS, $this->CSS)) {
+            array_push($this->CSS, $component->ComponentPathCSS);
+        }
+        if(!in_array($component->ComponentPathJS, $this->JS)) {
+            array_push($this->JS, $component->ComponentPathJS);
+        }
     }
     public function includeHeader() {
         require $this->basePath.$this->headerFile;
