@@ -1,0 +1,1 @@
+<a href="#" class="like">like</a>

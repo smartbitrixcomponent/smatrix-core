@@ -28,22 +28,44 @@ class ComponentMaker {
 		// проеряем	в /components/ директорию неймспейса
 		$this->sureDirExists($this->component->MakeComponentNamespaceDirPath());		
 		// директорию компонента
-		$this->sureDirExists($this->component->MakeComponentDirPath());
+		// $this->sureDirExists($this->component->MakeComponentDirPath());
+		$targetComponentDir = $this->component->MakeComponentDirPath();
+		// проверяем, что папка компонента существует
+		if(file_exists($targetComponentDir)){
+			echo "component folder already exists\n";
+			return;
+		}
+		$this->sureDirExists($targetTemplateDir);
+		// иначе, копируем в новую директорию все содержимое прототипа
+		$prototypeComponentDir = $this->getProtoCompPath().'.default/';
+		// пытаемся найти прототип компонента по названию, если не удается - тогда .default
+		foreach([$this->component->folderName,'.default'] as $prototypeComponentName){
+			if(
+				file_exists(($_prototypeComponentDir = $this->getProtoCompPath().$prototypeComponentName))
+			){
+				$prototypeComponentDir = $_prototypeComponentDir;
+				break;	
+			}
+		}
+		/**
+		 * подумать, как быть с комплексными. 
+		 */
+		$this->copy_dir($prototypeComponentDir, $targetComponentDir,false);
 	}
 
 	function sureComponentFileExists(){
-		$protitypeComponent = $this->getProtoCompPath().'.default/component.php';
+		$prototypeComponent = $this->getProtoCompPath().'.default/component.php';
 		/**
 		* @todo: искать прототип именно этого компонента в prototypes, и юзать стандартный только когда нет нужного 
-		* и переопределять $protitypeComponent
+		* и переопределять $prototypeComponent
 		*/
 		// если файл компонента уже существует, то и делать тут нечего
 		if(file_exists($this->component->ComponentPath)) return true;
 		if(
-			file_exists($protitypeComponent)
+			file_exists($prototypeComponent)
 		){
 			$res = copy(
-				$protitypeComponent, 
+				$prototypeComponent, 
 				$this->component->ComponentPath
 				
 			);
@@ -51,7 +73,7 @@ class ComponentMaker {
 		}
 	}
 
-	function sureComponentTemplateExists(){
+	public function sureComponentTemplateExists(){
 		$this->sureComponentExists();
 		// 
 		// var_dump($this->component);
@@ -62,17 +84,31 @@ class ComponentMaker {
 		потому сразу делю на последовательные вызовы
 		*/
 		$targetTemplateDir = $this->component->MakeTemplateDirPath();
+		// var_dump('$targetTemplateDir '.$targetTemplateDir);
 		// проверяем, что папка шаблонов существует
-		if(!file_exists($targetTemplateDir)){
-			$this->sureDirExists($targetTemplateDir);
-			// иначе, копируем в новую директорию все содержимое прототипа
-			$protitypeTemplateDir = $this->getProtoCompPath().'.default/templates/.default';
-			/**
-			* @todo: искать прототип именно этого компонента и шаблона в prototypes, и юзать стандартный только когда нет нужного 
-			* переопределяя $protitypeComponent
-			*/
-			$this->copy_dir($protitypeTemplateDir, $targetTemplateDir);
+		if(file_exists($targetTemplateDir)){
+			echo "template folder already exists\n";
+			return;
 		}
+		$this->sureDirExists($targetTemplateDir);
+		// иначе, копируем в новую директорию все содержимое прототипа
+		$prototypeTemplateDir = $this->getProtoCompPath().'.default/templates/.default';
+		// ищем компонент именно с таким названием, если получится
+		foreach([$this->component->folderName,'.default'] as $prototypeComponentName){
+			// если существует прототип такого компонента
+			if(file_exists($this->getProtoCompPath().$this->component->folderName)){
+				// тогда проверяем, существует ли .default или одноименный шаблон
+				foreach([$this->component->componentTemplateSubfolder,'.default'] as $prototypeTemplateName){
+					if(
+						file_exists(($_prototypeTemplateDir = $this->getProtoCompPath().$prototypeComponentName.'/'.$prototypeTemplateName))
+					){
+						$prototypeTemplateDir = $_prototypeTemplateDir;
+						break 2;	
+					}
+				}
+			}
+		}
+		$this->copy_dir($prototypeTemplateDir, $targetTemplateDir);
 	}
 
 	///////////////////////////
@@ -101,11 +137,13 @@ class ComponentMaker {
 	}
 
 	/**
-	 * рекурсивное копирование директории 
+	 * копирование директории 
 	 * основано https://gist.github.com/davejamesmiller
 	 * добавлена установка прав на файлы
+	 * добавлен параметр, позволяющий рекурсию. Директория и первый уровень ее содержимого копируются всегда
+	 * 
 	 */
-	function copy_dir($src, $dst)
+	function copy_dir($src, $dst,$recursive=true)
 	{
 		if (is_link($src)) {
 	        symlink(readlink($src), $dst);
@@ -114,7 +152,9 @@ class ComponentMaker {
 	        chmod($dst,$this->dirMode);
 	        foreach (scandir($src) as $file) {
 	            if ($file != '.' && $file != '..') {
-	                $this->copy_dir("$src/$file", "$dst/$file");
+	            	if(is_file("$src/$file") || $recursive){
+	                	$this->copy_dir("$src/$file", "$dst/$file",$recursive);
+	            	}
 	            }
 	        }
 	    } elseif (is_file($src)) {
@@ -122,7 +162,7 @@ class ComponentMaker {
 	        copy($src, $dst);
 	        chmod($dst,$this->fileMode);
 	    } else {
-	        echo "WARNING: Cannot copy $src (unknown file type)\n";
+	    	echo "WARNING: Cannot copy $src (unknown file type)\n";
 	    }
 	}
 }

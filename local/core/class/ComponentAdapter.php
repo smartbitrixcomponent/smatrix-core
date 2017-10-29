@@ -50,13 +50,15 @@ class ComponentAdapter {
 
     function executeComponent(){
         $arResult = $this->loadResultData();
-        // компонент имеет собственный component.php
+        // компонент имеет собственный component.php, инклуд шабллона должен быть в нем
         if (file_exists($this->ComponentPath)) {
             $arParams = &$this->arParams;
             $this->arResult = $arResult;
             $arParams = &$this->arParams;
             require $this->ComponentPath;
+            return;
         }
+        // дефолтное поведение - инклуд шаблона 
         $this->IncludeComponentTemplate();
     }
 

@@ -1,0 +1,6 @@
+.general-button {
+    font-size: 16px;
+}
+.general-button:hover {
+    background-color: #cccccc;
+}
