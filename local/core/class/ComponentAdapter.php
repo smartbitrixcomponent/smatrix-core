@@ -21,9 +21,12 @@ class ComponentAdapter {
         $explodeName = explode(":", $componentName);
         $this->nameSpace = $explodeName[0];
         $this->folderName = $explodeName[1];
+        /**
+         * @todo: guessComponentPath - поиск подходящего компонента, с учетом разных неймспейсов, шаблонов сайта, и выброс ошибки 
+         * $error = 'Компонент '.$this->nameSpace.':'.$this->folderName.' не существует.';
+         */
         $this->ComponentPath = $this->MakeComponentPath($componentName);
         $this->ComponentDirPath = $this->MakeComponentDirPath($componentName);
-        $this->MockComponentPath = __DIR__."/../mock/component.php";
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
         $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
@@ -31,26 +34,48 @@ class ComponentAdapter {
         * todo: объект $this->__template, в который занести все, что глубже папки компонента
         */
         $this->arParams = $arParams;
+        $this->arResult = null;
     }
 
 
     public function getComponent() {
         /**
-        * TODO: компонент должен быть объектом класса, и потенциально может не иметь файла component.php
-        * тогда он наследуется от базового, и при инклуде выполняется метод Execute родителя
-        * но то в битриксе, мы себе упрощаем пока что жизнь, и кладем component.php в каждую директорию компонента 
-        * UPD: MockComponentPath - это шаг в сторону описанного
-        */
-        $arResult = $this->getMockData();
-        $arParams = $this->arParams;
+         * этот метод должен толкьо получать класс объекта компонента, и дергать его execute()
+         * а методы ниже должны быть перенесены в отдельный класс компонента, плюсбазовый класс компонента получит часть методов адаптера, которые есть сейчас
+         */
         $this->combineCSS();
         $this->combineJS();
+        $this->executeComponent();
+    }
+
+    function executeComponent(){
+        $arResult = $this->loadResultData();
+        // компонент имеет собственный component.php
         if (file_exists($this->ComponentPath)) {
+            $arParams = &$this->arParams;
+            $this->arResult = $arResult;
+            $arParams = &$this->arParams;
             require $this->ComponentPath;
+        }
+        $this->IncludeComponentTemplate();
+    }
+
+    function IncludeComponentTemplate(){
+        if(file_exists($this->ComponentPathTemplate)) {
+            $arResult = $this->arResult;
+            $arParams = $this->arParams;
+            /**
+             * @todo: result_modifier
+             */
+            require $this->ComponentPathTemplate;
+            /**
+            * @todo: epilog ????????????
+            */
         } else {
-            require $this->MockComponentPath;
+            echo "error Template '".$this->componentTemplateSubfolder."' not found";
         }
     }
+
     /**
      * TODO
      * Дописать mock
@@ -68,12 +93,26 @@ class ComponentAdapter {
 
     private function combineCSS() {
         if(file_exists($this->ComponentPathCSS)) {
+            $APPLICATION = Core::getInstance();
+            /**
+             * @todo: в методы APPLICATION
+             */
+            if(!in_array($this->ComponentPathCSS, $APPLICATION->CSS)) {
+                array_push($APPLICATION->CSS, $this->ComponentPathCSS);
+            }
             return $this->ComponentPathCSS;
         }
         return;
     }
     private function combineJS() {
         if(file_exists($this->ComponentPathJS)) {
+            $APPLICATION = Core::getInstance();
+            /**
+             * @todo: в методы APPLICATION
+             */
+            if(!in_array($this->ComponentPathJS, $APPLICATION->JS)) {
+                array_push($APPLICATION->JS, $this->ComponentPathJS);
+            }
             return $this->ComponentPathJS;
         }
         return;
@@ -117,17 +156,14 @@ class ComponentAdapter {
         }
     }
 
-    /**
-     * TODO
-     * Добавить заглушку для получения данных из json
-     */
-    private function getMockData() {
+    private function loadResultData() {
+        $data = array();
         $jsonPath = $this->MakeJSONPath();
         if(file_exists($jsonPath)) {
             $json = file_get_contents($jsonPath);
-            return json_decode($json, true);
+            $data = json_decode($json, true);
         }
-        return array();
+        return $this->arResult = $data;
     }
 
 }
