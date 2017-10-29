@@ -1,6 +1,5 @@
 <?
     global $APPLICATION;
-    var_dump($arParams);
 ?>
 <ul>
 <?php foreach($arResult['ITEMS'] as $item):?>

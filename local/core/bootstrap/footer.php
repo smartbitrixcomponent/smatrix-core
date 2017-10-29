@@ -1,4 +1,5 @@
 <?php
+global $APPLICATION;
 foreach($APPLICATION->JS as $script) {
     echo "<script src='$script'></script>";
 }

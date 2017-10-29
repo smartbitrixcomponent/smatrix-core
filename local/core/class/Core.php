@@ -1,14 +1,16 @@
 <?php
 require_once __DIR__."/ComponentAdapter.php";
+require_once __DIR__."/Config.php";
 class Core {
-    const CSS_TEMPLATE = "<css />";
-    function __construct($template) {
+    const CSS_TEMPLATE = "<__css__></__css__>";
+    function __construct($template, $config = Config) {
         $this->template = $template;
         $this->basePath = __DIR__."/../../templates/".$this->template."/";
         $this->headerFile = "header.php";
         $this->footerFile = "footer.php";
         $this->JS = array();
         $this->CSS = array();
+        $this->config = new $config();
     }
     public function IncludeComponent($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array())
     {
