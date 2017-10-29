@@ -1,13 +1,15 @@
 <?php
 require_once __DIR__."/ComponentAdapter.php";
+require_once __DIR__."/Config.php";
 class Core {
-    const CSS_TEMPLATE = "<css />";
-    function __construct($template = '.default') {
+    const CSS_TEMPLATE = "<__css__></__css__>";
+    function __construct($template, $config = Config) {
         $this->setSiteTemplate($template);
         $this->headerFile = "header.php";
         $this->footerFile = "footer.php";
         $this->JS = array();
         $this->CSS = array();
+        $this->config = new $config();
     }
     static public function getInstance(){
         global $APPLICATION;
