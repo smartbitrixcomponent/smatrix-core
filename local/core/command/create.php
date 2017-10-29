@@ -1,7 +1,7 @@
 <?
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 $componentName = $argv[1];
-$compTemplate = $argv[2];
+$componentTemplate = $argv[2];
 if(!$componentTemplate){
 	$componentTemplate = '.default';
 }
@@ -23,5 +23,5 @@ $APPLICATION = Core::getInstance();
 $APPLICATION->setSiteTemplate($siteTemplate);
 
 $maker = new ComponentMaker($componentName, $componentTemplate);
-$maker->sureComponentExists();
-// $maker->sureComponentTemplateExists($component);
+// $maker->sureComponentTemplateExists(); // включено в sureComponentTemplateExists
+$maker->sureComponentTemplateExists();

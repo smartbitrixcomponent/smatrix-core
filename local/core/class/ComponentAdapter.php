@@ -72,7 +72,7 @@ class ComponentAdapter {
             * @todo: epilog ????????????
             */
         } else {
-            echo "error Template '".$this->componentTemplateSubfolder."' not found";
+            echo "error: Template '".$this->componentTemplateSubfolder."' of component '".$this->nameSpace.':'.$this->folderName."' not found";
         }
     }
 
