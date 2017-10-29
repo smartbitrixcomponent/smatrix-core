@@ -85,11 +85,6 @@ class ComponentAdapter {
             return;
         }
     }
-
-    /**
-     * TODO
-     * Добавить заглушку для получения данных из json
-     */
     private function getMockData() {
         $jsonPath = $this->MakeJSONPath();
         if(file_exists($jsonPath)) {

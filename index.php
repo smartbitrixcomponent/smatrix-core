@@ -1,5 +1,6 @@
 <?php
-    require __DIR__."/local/core/bootstrap/header.php"
+    require_once "local/helpers/frontend.php";
+    __initHeader();
 ?>
 <?php
     $APPLICATION->IncludeComponent("bitrix:simple", "default", array(
@@ -13,5 +14,5 @@
 ?>
 <?$APPLICATION->IncludeComponent("bitrix:button", "default", array("CONTENT" => "im button"));?>
 <?php
-    require __DIR__."/local/core/bootstrap/footer.php"
+    __initFooter();
 ?>

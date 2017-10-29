@@ -2,5 +2,5 @@
 *.sublime-project
 *.sublime-workspace
 *.log
-
+config.json
 /node_modules/
