@@ -30,6 +30,7 @@ class ComponentAdapter {
         /**
         * todo: объект $this->__template, в который занести все, что глубже папки компонента
         */
+        $this->arParams = $arParams;
     }
 
 
@@ -41,6 +42,7 @@ class ComponentAdapter {
         * UPD: MockComponentPath - это шаг в сторону описанного
         */
         $arResult = $this->getMockData();
+        $arParams = $this->arParams;
         $this->combineCSS();
         $this->combineJS();
         if (file_exists($this->ComponentPath)) {
