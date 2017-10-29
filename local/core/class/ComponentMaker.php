@@ -53,26 +53,6 @@ class ComponentMaker {
 		$this->copy_dir($prototypeComponentDir, $targetComponentDir,false);
 	}
 
-	function sureComponentFileExists(){
-		$prototypeComponent = $this->getProtoCompPath().'.default/component.php';
-		/**
-		* @todo: искать прототип именно этого компонента в prototypes, и юзать стандартный только когда нет нужного 
-		* и переопределять $prototypeComponent
-		*/
-		// если файл компонента уже существует, то и делать тут нечего
-		if(file_exists($this->component->ComponentPath)) return true;
-		if(
-			file_exists($prototypeComponent)
-		){
-			$res = copy(
-				$prototypeComponent, 
-				$this->component->ComponentPath
-				
-			);
-			chmod($this->component->ComponentPath,$this->fileMode);
-		}
-	}
-
 	public function sureComponentTemplateExists(){
 		$this->sureComponentExists();
 		// 

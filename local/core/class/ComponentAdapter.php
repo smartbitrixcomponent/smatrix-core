@@ -5,7 +5,6 @@ class ComponentAdapter {
         $this->basePath = __DIR__.'/../../components/';
         $this->templatePath = __DIR__.'/../../templates/';
         $this->baseHTMLPath = '/local/templates/';
-        $this->baseName = 'component.php';
         $this->templateBaseName = 'template.php';
         /**
         * todo: поддержка .default шаблона 
@@ -25,7 +24,6 @@ class ComponentAdapter {
          * @todo: guessComponentPath - поиск подходящего компонента, с учетом разных неймспейсов, шаблонов сайта, и выброс ошибки 
          * $error = 'Компонент '.$this->nameSpace.':'.$this->folderName.' не существует.';
          */
-        $this->ComponentPath = $this->MakeComponentPath($componentName);
         $this->ComponentDirPath = $this->MakeComponentDirPath($componentName);
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
@@ -50,15 +48,7 @@ class ComponentAdapter {
 
     function executeComponent(){
         $arResult = $this->loadResultData();
-        // компонент имеет собственный component.php, инклуд шабллона должен быть в нем
-        if (file_exists($this->ComponentPath)) {
-            $arParams = &$this->arParams;
-            $this->arResult = $arResult;
-            $arParams = &$this->arParams;
-            require $this->ComponentPath;
-            return;
-        }
-        // дефолтное поведение - инклуд шаблона 
+        // инклуд шаблона 
         $this->IncludeComponentTemplate();
     }
 
@@ -123,9 +113,6 @@ class ComponentAdapter {
     * @todo: разгрести этот хаос почти одинаковых названий, одни из которых относительно корня сайта, другие абсолютные, а третьи отностиельно core
     * привести все к путям относительно одной точки, а абсолютными адреса делать толкьо при работу с ФС
     */
-    public function MakeComponentPath($componentName) {
-        return $this->MakeComponentDirPath().$this->baseName;
-    }
     public function MakeComponentDirPath() {
         return $this->MakeComponentNamespaceDirPath().$this->folderName."/";
     }
