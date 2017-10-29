@@ -20,14 +20,16 @@ gulp.task('default', function() {
         './local/templates/**/**/**/**/**/**/*.css',
         './local/templates/**/**/**/**/**/**/*.js',
     ]).on('change', function (file) {
-        const gulpStylelint = require('gulp-stylelint');
-        gulp.src(file.path)
-        .pipe(gulpStylelint({
-          reporters: [
-            {formatter: 'string', console: true}
-          ],
-          failAfterError: false
-        }));
+        if(file.path.indexOf('.css') != -1) {
+            const gulpStylelint = require('gulp-stylelint');
+            gulp.src(file.path)
+            .pipe(gulpStylelint({
+              reporters: [
+                {formatter: 'string', console: true}
+              ],
+              failAfterError: false
+            }));
+        }
         browserSync.reload();
     });
     // gulp.watch([]).on('change', function () {
