@@ -19,11 +19,13 @@ class ComponentAdapter {
         $this->ComponentPathTemplate = $this->MakeTemplatePath();
         $this->ComponentPathCSS = $this->getComponentAsset($this->MakeCSSPath());
         $this->ComponentPathJS = $this->getComponentAsset($this->MakeJSPath());
+        $this->arParams = $arParams;
     }
 
 
     public function getComponent() {
         $arResult = $this->getMockData();
+        $arParams = $this->arParams;
         $this->combineCSS();
         $this->combineJS();
         if (file_exists($this->ComponentPath)) {
