@@ -4,24 +4,33 @@ require_once __DIR__."/Config.php";
 class Core {
     const CSS_TEMPLATE = "<__css__></__css__>";
     function __construct($template, $config = Config) {
-        $this->template = $template;
-        $this->basePath = __DIR__."/../../templates/".$this->template."/";
+        $this->setSiteTemplate($template);
         $this->headerFile = "header.php";
         $this->footerFile = "footer.php";
         $this->JS = array();
         $this->CSS = array();
         $this->config = new $config();
     }
+    static public function getInstance(){
+        global $APPLICATION;
+        if(!($APPLICATION instanceof Core)){
+            $APPLICATION = new Self;
+        }
+        return $APPLICATION;
+    }
+
+    public function setSiteTemplate($templateName){
+        $this->template = $templateName;
+        $this->basePath = __DIR__."/../../templates/".$this->template."/";
+    }
+    public function getSiteTemplate(){
+        return $this->template;
+    }
+
     public function IncludeComponent($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array())
     {
-        $component = new ComponentAdapter($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams, $this->template);
+        $component = new ComponentAdapter($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams);
         $component->getComponent();
-        if(!in_array($component->ComponentPathCSS, $this->CSS)) {
-            array_push($this->CSS, $component->ComponentPathCSS);
-        }
-        if(!in_array($component->ComponentPathJS, $this->JS)) {
-            array_push($this->JS, $component->ComponentPathJS);
-        }
     }
     public function includeHeader() {
         require $this->basePath.$this->headerFile;
@@ -49,4 +58,5 @@ class Core {
     public function replaceCSS($html, $css) {
         return str_replace(self::CSS_TEMPLATE, $css, $html);
     }
+
 }

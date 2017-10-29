@@ -13,6 +13,8 @@
     );
 ?>
 <?$APPLICATION->IncludeComponent("bitrix:button", "default", array("CONTENT" => "im button"));?>
+<?$APPLICATION->IncludeComponent("bitrix:news", ".default");?>
+<?$APPLICATION->IncludeComponent("bitrix:news", "template");?>
 <?php
     __initFooter();
 ?>
