@@ -2,6 +2,9 @@
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 $componentName = $argv[1];
 $componentTemplate = $argv[2];
+if(strpos($componentName, 'bitrix:') === 0){
+	exit('components in bitrix: namespace are disallowed');
+}
 if(!$componentTemplate){
 	$componentTemplate = '.default';
 }
