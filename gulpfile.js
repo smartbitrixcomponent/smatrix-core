@@ -1,6 +1,8 @@
-var gulp = require('gulp'),
-connect = require('gulp-connect-php'),
-browserSync = require('browser-sync');
+var gulp = require('gulp');
+var connect = require('gulp-connect-php');
+var browserSync = require('browser-sync');
+var csslint = require('gulp-csslint');
+
 
 gulp.task('default', function() {
     connect.server({}, function (){
@@ -17,7 +19,15 @@ gulp.task('default', function() {
         './local/templates/**/**/**/**/**/**/*.php',
         './local/templates/**/**/**/**/**/**/*.css',
         './local/templates/**/**/**/**/**/**/*.js',
-    ]).on('change', function () {
+    ]).on('change', function (file) {
+        const gulpStylelint = require('gulp-stylelint');
+        gulp.src(file.path)
+        .pipe(gulpStylelint({
+          reporters: [
+            {formatter: 'string', console: true}
+          ],
+          failAfterError: false
+        }));
         browserSync.reload();
     });
     // gulp.watch([]).on('change', function () {
