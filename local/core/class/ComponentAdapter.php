@@ -75,14 +75,16 @@ class ComponentAdapter {
      * Дописать mock
      */
     public function addExternalCss($path) {
-
+        global $APPLICATION;
+        array_push($APPLICATION->CSS, $path);
     }
     /**
      * TODO
      * Дописать mock
      */
     public function addExternalJS($path) {
-
+        global $APPLICATION;
+        array_push($APPLICATION->JS, $path);
     }
 
     private function combineCSS() {
