@@ -2,17 +2,18 @@
 class ComponentAdapter {
     function __construct($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array()) {
         $APPLICATION = Core::getInstance();
+        $this->DOCUMENT_ROOT = __DIR__.'/../../../';
         $this->basePath = __DIR__.'/../../components/';
         $this->templatePath = __DIR__.'/../../templates/';
         $this->baseHTMLPath = '/local/templates/';
         $this->templateBaseName = 'template.php';
         /**
-        * todo: поддержка .default шаблона 
+        * todo: поддержка .default шаблона
         */
         $this->componentTemplateSubfolder = $componentTemplate;
         $this->templateMockBaseName = 'arResult.json';
         /**
-        * todo: поддержка .default шаблона сайта 
+        * todo: поддержка .default шаблона сайта
         */
         $this->templateFolderName = $APPLICATION->getSiteTemplate().'/components/';
         $this->nameSpace = '';
@@ -21,7 +22,7 @@ class ComponentAdapter {
         $this->nameSpace = $explodeName[0];
         $this->folderName = $explodeName[1];
         /**
-         * @todo: guessComponentPath - поиск подходящего компонента, с учетом разных неймспейсов, шаблонов сайта, и выброс ошибки 
+         * @todo: guessComponentPath - поиск подходящего компонента, с учетом разных неймспейсов, шаблонов сайта, и выброс ошибки
          * $error = 'Компонент '.$this->nameSpace.':'.$this->folderName.' не существует.';
          */
         $this->ComponentDirPath = $this->MakeComponentDirPath($componentName);
@@ -48,7 +49,7 @@ class ComponentAdapter {
 
     function executeComponent(){
         $arResult = $this->loadResultData();
-        // инклуд шаблона 
+        // инклуд шаблона
         $this->IncludeComponentTemplate();
     }
 
@@ -84,7 +85,7 @@ class ComponentAdapter {
     }
 
     private function combineCSS() {
-        if(file_exists($this->ComponentPathCSS)) {
+        if(file_exists($this->DOCUMENT_ROOT.$this->ComponentPathCSS)) {
             $APPLICATION = Core::getInstance();
             /**
              * @todo: в методы APPLICATION
@@ -97,7 +98,7 @@ class ComponentAdapter {
         return;
     }
     private function combineJS() {
-        if(file_exists($this->ComponentPathJS)) {
+        if(file_exists($this->DOCUMENT_ROOT.$this->ComponentPathJS)) {
             $APPLICATION = Core::getInstance();
             /**
              * @todo: в методы APPLICATION
