@@ -1,12 +1,6 @@
-# SMART BITRIX COMPONENTS #
-
-## SMATRIX ##
+# SMART BITRIX COMPONENTS BOILERPLATE CORE#
 
 Get started:
 
-* clone repository
 * npm install
-* enjoy
-
-Run dev server:
-    gulp
+* gulp
