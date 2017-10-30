@@ -85,6 +85,13 @@ class ComponentAdapter {
     }
 
     private function combineCSS() {
+        global $APPLICATION;
+        if(file_exists($this->DOCUMENT_ROOT.'/local/templates/'.$APPLICATION->template.'/template_styles.css')) {
+            array_push($APPLICATION->CSS, '/local/templates/'.$APPLICATION->template.'/template_styles.css');
+        }
+        /**
+         * СОбираем стили от компонентов
+         */
         if(file_exists($this->DOCUMENT_ROOT.$this->ComponentPathCSS)) {
             $APPLICATION = Core::getInstance();
             /**
