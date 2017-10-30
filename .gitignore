@@ -4,3 +4,4 @@
 *.log
 config.json
 /node_modules/
+/tests/php-unit
