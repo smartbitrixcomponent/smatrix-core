@@ -19,10 +19,16 @@ class Core {
         return $APPLICATION;
     }
 
+    /**
+     * Покарыт тестом
+     */
     public function setSiteTemplate($templateName){
         $this->template = $templateName;
         $this->basePath = __DIR__."/../../templates/".$this->template."/";
     }
+    /**
+     * Покарыт тестом
+     */
     public function getSiteTemplate(){
         return $this->template;
     }

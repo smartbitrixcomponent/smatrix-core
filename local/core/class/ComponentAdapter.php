@@ -4,7 +4,8 @@ class ComponentAdapter {
         $APPLICATION = Core::getInstance();
         $this->DOCUMENT_ROOT = __DIR__.'/../../../';
         $this->basePath = __DIR__.'/../../components/';
-        $this->templatePath = __DIR__.'/../../templates/';
+        $this->rootTemplatePath = __DIR__.'/../../templates/';
+
         $this->baseHTMLPath = '/local/templates/';
         $this->templateBaseName = 'template.php';
         /**
@@ -128,19 +129,22 @@ class ComponentAdapter {
         return $this->basePath.$this->nameSpace."/";
     }
     public function MakeTemplateDirPath() {
-        return $this->templatePath.$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
+        return $this->rootTemplatePath.$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
     }
     public function MakeTemplatePath() {
         return $this->MakeTemplateDirPath().$this->templateBaseName;
     }
-    public function MakeTemplateHTMLDirPath() {
-        return $this->baseHTMLPath.$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
+    public function GetTemplateURL() { //+
+        return $this->baseHTMLPath;
+    }
+    public function GetComponentTemplateURL() { //+
+        return $this->GetTemplateURL().$this->templateFolderName.$this->nameSpace."/".$this->folderName."/".$this->componentTemplateSubfolder.'/';
     }
     private function MakeCSSPath() {
-        return $this->MakeTemplateHTMLDirPath().'style.css';
+        return $this->GetComponentTemplateURL().'style.css';
     }
     private function MakeJSPath() {
-        return $this->MakeTemplateHTMLDirPath().'script.js';
+        return $this->GetComponentTemplateURL().'script.js';
     }
     private function MakeJSONPath() {
         return $this->MakeTemplateDirPath().'arResult.json';
