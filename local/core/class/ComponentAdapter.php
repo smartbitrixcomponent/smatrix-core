@@ -43,9 +43,9 @@ class ComponentAdapter {
          * этот метод должен толкьо получать класс объекта компонента, и дергать его execute()
          * а методы ниже должны быть перенесены в отдельный класс компонента, плюсбазовый класс компонента получит часть методов адаптера, которые есть сейчас
          */
+        $this->executeComponent();
         $this->combineCSS();
         $this->combineJS();
-        $this->executeComponent();
     }
 
     function executeComponent(){

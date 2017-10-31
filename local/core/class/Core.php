@@ -65,4 +65,8 @@ class Core {
         return str_replace(self::CSS_TEMPLATE, $css, $html);
     }
 
+    public function AddHeadScript($path) {
+        array_push($this->JS, $path);
+    }
+
 }
