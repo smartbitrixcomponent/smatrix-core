@@ -2,5 +2,4 @@
 
 Get started:
 
-* npm install
-* gulp
+Use (smatrix-cli)[https://github.com/smartbitrixcomponent/cli] for init and managed your project
