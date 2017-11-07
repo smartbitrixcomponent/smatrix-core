@@ -9,3 +9,5 @@ $APPLICATION = Core::getInstance();
 $APPLICATION->setSiteTemplate('site');
 ob_start();
 $APPLICATION->includeHeader();
+
+define("SITE_TEMPLATE_PATH", $APPLICATION->getSiteTemplatePath());
