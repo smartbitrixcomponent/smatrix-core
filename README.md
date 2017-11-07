@@ -2,4 +2,4 @@
 
 Get started:
 
-Use [smatrix-cli](https://github.com/smartbitrixcomponent/cli) for init and managed your project
+Use [smatrix-cli](https://github.com/smartbitrixcomponent/cli) for init and manage your project
