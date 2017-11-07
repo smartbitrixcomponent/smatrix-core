@@ -33,6 +33,10 @@ class Core {
         return $this->template;
     }
 
+    public function getSiteTemplatePath() {
+        return "/local/templates/".$this->template."/";
+    }
+
     public function IncludeComponent($componentName, $componentTemplate, $arParams = array(), $parentComponent = null, $arFunctionParams = array())
     {
         $component = new ComponentAdapter($componentName, $componentTemplate, $arParams, $parentComponent, $arFunctionParams);
