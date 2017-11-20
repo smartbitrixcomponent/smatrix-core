@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+    php:
+        build: ./php
+        container_name: php
+        volumes_from:
+            - source
+        ports:
+            - '9000:9000'
+        networks:
+            - smatrix
+        restart: always
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        volumes_from:
+            - source
+        ports:
+            - '80:80'
+            - '443:443'
+        links:
+            - php
+        networks:
+            - smatrix
+        restart: always
+    source:
+        image: alpine:latest
+        container_name: source
+        volumes:
+            - ./logs/nginx:/var/log/nginx
+            - ./logs/php:/var/log/php
+            - ../:/var/www/bitrix
+            - /etc/localtime:/etc/localtime/:ro
+        networks:
+            - smatrix
+networks:
+    smatrix:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 10.100.0.0/24
